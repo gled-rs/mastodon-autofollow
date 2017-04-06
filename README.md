@@ -3,8 +3,9 @@ Autofollow bot for mastodon
 
 Simple bot that follows every new user it finds on the public timeline of an instance
 
-# init.sh
-Prepare a virtualenv to use the script and activate it
+It's a proof of concept, not to be deployed to handle billions of toots and followed.
 
-# autofollow.py:
-can be launched then by cron to populate followed list
+# launch.sh
+Prepare a virtualenv to use the script and activate it, launch the script and exit.
+use it in cron at your own pace
+
