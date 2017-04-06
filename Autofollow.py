@@ -12,8 +12,8 @@ if FIRST_RUN or not os.path.exists('.pytooter_clientcred.txt'):
 	      to_file = '.pytooter_clientcred.txt',
 	      api_base_url=INSTANCE
 	)
-	username=input('What is the username ?')
-	password=input('What is the password ?')
+	username=raw_input('What is the username ?')
+	password=raw_input('What is the password ?')
 
 	mastodon = Mastodon(client_id = '.pytooter_clientcred.txt',api_base_url=INSTANCE)
 	mastodon.log_in(
