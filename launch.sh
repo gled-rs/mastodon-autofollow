@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! -d .venv]; then
+if [ ! -d .venv ]; then
   virtualenv .venv
   source .venv/bin/activate
   pip install Mastodon.py
