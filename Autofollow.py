@@ -3,6 +3,7 @@ import json
 import os
 
 FIRST_RUN=False
+DEBUG=False
 INSTANCE='https://mastodon.pericles.world'
 
 # Register app - only once!
@@ -37,21 +38,33 @@ else:
 	runparams={'since_id':0}
 
 my_id = mastodon.account_search('@followbot')[0]['id']
+
+if DEBUG:
+    print('Found my id %i' % my_id)
+
 my_followed = mastodon.account_following(my_id)
-my_followed_list=[]
+my_followed_list=[my_id]
 total_followed=0
 for user in my_followed:
     my_followed_list.append(user['id'])
-    total_followed+=0
+    total_followed+=1
+
+if DEBUG:
+    print('I am currently already following %i persons' % total_followed)
 
 toots = mastodon.timeline_public(since_id=runparams['since_id'])
 new_followed=0
 for toot in toots:
     user_id = toot['account']['id']
+    if DEBUG:
+        print('[%i] new Toot from %i' % (toot['id'],user_id))
     runparams['since_id'] = toot['id']
     if user_id not in my_followed_list:
+        if DEBUG:
+            print('Trying to follow %i' % user_id)
         new_followed+=1
         mastodon.account_follow(user_id)
+        my_followed_list.append(user_id)
 
 
 with open('.Autofollow.state.json','w') as file:
