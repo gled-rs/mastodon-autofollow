@@ -29,7 +29,6 @@ mastodon = Mastodon(
     api_base_url=INSTANCE
 )
 
-#mastodon.toot('Fetching new users to follow on the timeline...')
 
 if os.path.exists('.Autofollow.state.json'):
 	with open('.Autofollow.state.json','r') as file:
@@ -39,16 +38,24 @@ else:
 
 my_id = mastodon.account_search('@followbot')[0]['id']
 my_followed = mastodon.account_following(my_id)
-
-print(json.dumps(my_followed))
+my_followed_list=[]
+total_followed=0
+for user in my_followed:
+    my_followed_list.append(user['id'])
+    total_followed+=0
 
 toots = mastodon.timeline_public(since_id=runparams['since_id'])
+new_followed=0
 for toot in toots:
-	#print(json.dumps(toot))
-	user_id = toot['account']['id']
-	runparams['since_id'] = toot['id']
-	mastodon.account_follow(user_id)
+    user_id = toot['account']['id']
+    runparams['since_id'] = toot['id']
+    if user_id not in my_followed_list:
+        new_followed+=1
+        mastodon.account_follow(user_id)
 
 
-#with open('.Autofollow.state.json','w') as file:
-#	json.dump(runparams,file)
+with open('.Autofollow.state.json','w') as file:
+        json.dump(runparams,file)
+
+if new_followed > 0:
+    mastodon.toot('I am now following %i new users, for a total of %i.' % (new_followed,total_followed+new_followed))
