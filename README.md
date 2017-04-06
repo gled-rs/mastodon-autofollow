@@ -1,9 +1,11 @@
 # mastodon-autofollow
 Autofollow bot for mastodon
 
-Simple bot that follows every new user it finds on the public timeline of an instance
+Simple bot that follows every new user it finds on the public timeline of an instance.
 
-It's a proof of concept, not to be deployed to handle billions of toots and followed.
+This should help populating the federated timeline on the instance I am running.
+
+It's a proof of concept, but a working one
 
 # dependancies:
 - Mastodon.py
