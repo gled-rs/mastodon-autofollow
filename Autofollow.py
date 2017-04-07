@@ -6,6 +6,11 @@ FIRST_RUN=False
 DEBUG=False
 INSTANCE='https://mastodon.host'
 
+BLACKLIST = {
+        'users':['b@icosahedron.website'],
+        'instances':[]
+        }
+
 # Register app - only once!
 if FIRST_RUN or not os.path.exists('.pytooter_clientcred.txt'):
 	Mastodon.create_app(
@@ -62,11 +67,13 @@ if DEBUG:
 
 toots = mastodon.timeline_public(since_id=runparams['since_id'],limit=40)
 new_followed=0
+new_user_list=[]
 for toot in toots:
-    user_id = toot['account']['id']
-    if DEBUG:
-        print('[%i] new Toot from %i' % (toot['id'],user_id))
-    runparams['since_id'] = toot['id']
+    if toot['account']['acct'] not in BLACKLIST['users']:
+        new_user_list.append(toot['account']['id'])
+        runparams['since_id'] = toot['id']
+
+for user_id in new_user_list:
     if user_id not in my_followed_list or user_id not in runparams['list_seen']:
         if DEBUG:
             print('Trying to follow %i' % user_id)
