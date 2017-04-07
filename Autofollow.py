@@ -8,7 +8,7 @@ INSTANCE='https://mastodon.host'
 
 BLACKLIST = {
         'users':['b@icosahedron.website'],
-        'instances':[]
+        'instances':['icosahedron.website']
         }
 
 # Register app - only once!
