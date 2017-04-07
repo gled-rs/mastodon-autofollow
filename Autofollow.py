@@ -69,11 +69,11 @@ toots = mastodon.timeline_public(since_id=runparams['since_id'],limit=40)
 new_followed=0
 new_user_list=[]
 for toot in toots:
-    if toot['account']['acct'] not in BLACKLIST['users']:
+    if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances']:
         new_user_list.append(toot['account']['id'])
     if len(toot['mentions']) > 0:
         for mention in toot['mentions']:
-            if mention['acct'] not in BLACKLIST['users']:
+            if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances']:
                 new_user_list.append(mention['id'])
     runparams['since_id'] = toot['id']
 
