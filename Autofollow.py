@@ -13,20 +13,20 @@ BLACKLIST = {
 
 # Register app - only once!
 if FIRST_RUN or not os.path.exists('.pytooter_clientcred.txt'):
-	Mastodon.create_app(
-	     'autofollower',
-	      to_file = '.pytooter_clientcred.txt',
-	      api_base_url=INSTANCE
-	)
-	username=raw_input('What is the username ?')
-	password=raw_input('What is the password ?')
+    Mastodon.create_app(
+         'autofollower',
+          to_file = '.pytooter_clientcred.txt',
+          api_base_url=INSTANCE
+    )
+    username=raw_input('What is the username ?')
+    password=raw_input('What is the password ?')
 
-	mastodon = Mastodon(client_id = '.pytooter_clientcred.txt',api_base_url=INSTANCE)
-	mastodon.log_in(
-	    username,
-	    password,
-	    to_file = '.pytooter_usercred.txt'
-	)
+    mastodon = Mastodon(client_id = '.pytooter_clientcred.txt',api_base_url=INSTANCE)
+    mastodon.log_in(
+        username,
+        password,
+        to_file = '.pytooter_usercred.txt'
+    )
 
 ## Create actual instance
 mastodon = Mastodon(
@@ -37,10 +37,10 @@ mastodon = Mastodon(
 
 
 if os.path.exists('.Autofollow.state.json'):
-	with open('.Autofollow.state.json','r') as file:
-		runparams=json.load(file)
+    with open('.Autofollow.state.json','r') as file:
+        runparams=json.load(file)
 else:
-	runparams={'since_id':0}
+    runparams={'since_id':0}
 
 if 'runcount' not in runparams:
     runparams['runcount'] = 1
