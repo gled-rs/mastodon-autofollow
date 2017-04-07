@@ -71,7 +71,11 @@ new_user_list=[]
 for toot in toots:
     if toot['account']['acct'] not in BLACKLIST['users']:
         new_user_list.append(toot['account']['id'])
-        runparams['since_id'] = toot['id']
+    if len(toot['mentions']) > 0:
+        for mention in toot['mentions']:
+            if mention['acct'] not in BLACKLIST['users']:
+                new_user_list.append(mention['id'])
+    runparams['since_id'] = toot['id']
 
 for user_id in new_user_list:
     if user_id not in my_followed_list or user_id not in runparams['list_seen']:
