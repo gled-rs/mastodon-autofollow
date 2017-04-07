@@ -8,7 +8,7 @@ This helps populating the federated timeline on the instance I am running with a
 It's a proof of concept, but a working one
 
 # dependancies:
-- Mastodon.py
+- Mastodon.py ( with the pull request 24 if you want your count of followees to be accurate)
 
 # launch.sh
 Simple script that takes care of installing dependancie in virtualenv and launching the script.
