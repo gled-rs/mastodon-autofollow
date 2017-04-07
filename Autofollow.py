@@ -37,6 +37,11 @@ if os.path.exists('.Autofollow.state.json'):
 else:
 	runparams={'since_id':0}
 
+if 'runcount' not in runparams:
+    runparams['runcount'] = 1
+else:
+    runparams['runcount']+=1
+
 my_id = mastodon.account_search('@followbot')[0]['id']
 
 if DEBUG:
@@ -49,26 +54,30 @@ for user in my_followed:
     my_followed_list.append(user['id'])
     total_followed+=1
 
+if 'list_seen' not in runparams:
+    runparams['list_seen'] = my_followed_list
+
 if DEBUG:
     print('I am currently already following %i persons' % total_followed)
 
-toots = mastodon.timeline_public(since_id=runparams['since_id'])
+toots = mastodon.timeline_public(since_id=runparams['since_id'],limit=40)
 new_followed=0
 for toot in toots:
     user_id = toot['account']['id']
     if DEBUG:
         print('[%i] new Toot from %i' % (toot['id'],user_id))
     runparams['since_id'] = toot['id']
-    if user_id not in my_followed_list:
+    if user_id not in my_followed_list or user_id not in runparams['list_seen']:
         if DEBUG:
             print('Trying to follow %i' % user_id)
         new_followed+=1
         mastodon.account_follow(user_id)
         my_followed_list.append(user_id)
+        runparams['list_seen'].append(user_id)
 
+if new_followed > 0 and runparams['runcount'] > 10:
+    mastodon.toot('I am now following %i users out of the %i I have seen, boost some toots from others so I add them :)' % (total_followed+new_followed,len(runparams['list_seen'])))
+    runparams['runcount'] = 1
 
 with open('.Autofollow.state.json','w') as file:
         json.dump(runparams,file)
-
-if new_followed > 0:
-    mastodon.toot('I am now following %i new users, for a total of %i.' % (new_followed,total_followed+new_followed))
