@@ -4,7 +4,7 @@ import os
 
 FIRST_RUN=False
 DEBUG=False
-INSTANCE='https://mastodon.pericles.world'
+INSTANCE='https://mastodon.host'
 
 # Register app - only once!
 if FIRST_RUN or not os.path.exists('.pytooter_clientcred.txt'):
