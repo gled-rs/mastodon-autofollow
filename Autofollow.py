@@ -75,15 +75,18 @@ new_followed=0
 new_user_list=[]
 for toot in toots:
     runparams['since_id'] = toot['id']
-    if toot == 'error':
-        continue
-    if 'account' in toot and 'acct' in toot['account']:
-        if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances']:
-            new_user_list.append(toot['account']['id'])
-    if len(toot['mentions']) > 0:
-        for mention in toot['mentions']:
-            if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances']:
-                new_user_list.append(mention['id'])
+    try:
+        if toot == 'error':
+            continue
+        if 'account' in toot and 'acct' in toot['account']:
+            if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances']:
+                new_user_list.append(toot['account']['id'])
+        if len(toot['mentions']) > 0:
+            for mention in toot['mentions']:
+                if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances']:
+                    new_user_list.append(mention['id'])
+    except:
+        print('Error while trying to do something with %s' % toot)
 
 for user_id in new_user_list:
     if user_id not in my_followed_list or user_id not in runparams['list_seen']:
