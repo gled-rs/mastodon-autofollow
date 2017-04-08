@@ -3,7 +3,7 @@ import json
 import os
 
 FIRST_RUN=False
-DEBUG=False
+DEBUG=True
 INSTANCE='https://mastodon.host'
 
 BLACKLIST = {
@@ -52,7 +52,11 @@ if 'runcount' not in runparams:
 else:
     runparams['runcount']+=1
 
-my_id = mastodon.account_search('@followbot')[0]['id']
+if 'my_id' not in runparams:
+    my_id = mastodon.account_search('@followbot')[0]['id']
+    runparams['my_id'] = my_id
+else:
+    my_id = runparams['my_id']
 
 if DEBUG:
     print('Found my id %i' % my_id)
@@ -61,8 +65,9 @@ my_followed = mastodon.account_following(my_id)
 my_followed_list=[my_id]
 total_followed=0
 for user in my_followed:
-    my_followed_list.append(user['id'])
-    total_followed+=1
+    if 'id' in user:
+        my_followed_list.append(user['id'])
+        total_followed+=1
 
 if 'list_seen' not in runparams:
     runparams['list_seen'] = my_followed_list
@@ -74,17 +79,20 @@ toots = mastodon.timeline_public(since_id=runparams['since_id'],limit=40)
 new_followed=0
 new_user_list=[]
 for toot in toots:
-    try:
-        if 'account' in toot:
-            if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances'] and not toot['account']['note'].contain('#nobot'):
-                new_user_list.append(toot['account']['id'])
-        if len(toot['mentions']) > 0:
-            for mention in toot['mentions']:
-                if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances']:
-                    new_user_list.append(mention['id'])
-    except:
-        print('Error while trying to do something with %s' % toot)
-    runparams['since_id'] = toot['id']
+    if DEBUG:
+        print('Toot: %s' % toot)
+    if toot != 'error':
+        try:
+            if 'account' in toot:
+                if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances'] and not toot['account']['note'].contain('#nobot'):
+                    new_user_list.append(toot['account']['id'])
+            if len(toot['mentions']) > 0:
+                for mention in toot['mentions']:
+                    if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances'] and not toot['account']['note'].contain('#nobot'):
+                        new_user_list.append(mention['id'])
+        except:
+            print('Error while trying to do something with %s' % toot)
+        runparams['since_id'] = toot['id']
 
 for user_id in new_user_list:
     if user_id not in my_followed_list or user_id not in runparams['list_seen']:
