@@ -9,7 +9,7 @@ else
 fi
 
 if [ -d .git ]; then
-  git pull
+  git pull 2>&1 > /dev/null
 fi
 
 python Autofollow.py
