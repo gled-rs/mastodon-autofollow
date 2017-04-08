@@ -23,3 +23,4 @@ To users: if in your bio you have the keyword #nobot, this bot won't try to foll
 
 If you use this code, please respect the wishes of the person this bot will follow. Some don't want to be bothered, some instances don't want
 a followbot to bother them, respect them and either contact me ( @gled@mastodon.host ) or do a Pull Request to add your blacklist to the list.
+The blacklist is in Autofollow.py, variable BLACKLIST
