@@ -20,6 +20,7 @@ if FIRST_RUN or not os.path.exists('.pytooter_clientcred.txt'):
     )
     username=raw_input('What is the username ?')
     password=raw_input('What is the password ?')
+    INSTANCE=raw_input('What is your instance ?')
 
     mastodon = Mastodon(client_id = '.pytooter_clientcred.txt',api_base_url=INSTANCE)
     mastodon.log_in(
@@ -28,19 +29,23 @@ if FIRST_RUN or not os.path.exists('.pytooter_clientcred.txt'):
         to_file = '.pytooter_usercred.txt'
     )
 
+if os.path.exists('.Autofollow.state.json'):
+    with open('.Autofollow.state.json','r') as file:
+        runparams=json.load(file)
+else:
+    runparams={'since_id':0}
+
+if 'instance' in runparams:
+    INSTANCE=runparams['instance']
+else:
+    runparams['instance'] = INSTANCE
+
 ## Create actual instance
 mastodon = Mastodon(
     client_id = '.pytooter_clientcred.txt',
     access_token = '.pytooter_usercred.txt',
     api_base_url=INSTANCE
 )
-
-
-if os.path.exists('.Autofollow.state.json'):
-    with open('.Autofollow.state.json','r') as file:
-        runparams=json.load(file)
-else:
-    runparams={'since_id':0}
 
 if 'runcount' not in runparams:
     runparams['runcount'] = 1
@@ -69,13 +74,16 @@ toots = mastodon.timeline_public(since_id=runparams['since_id'],limit=40)
 new_followed=0
 new_user_list=[]
 for toot in toots:
-    if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances']:
-        new_user_list.append(toot['account']['id'])
+    runparams['since_id'] = toot['id']
+    if toot == 'error':
+        continue
+    if 'account' in toot and 'acct' in toot['account']:
+        if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances']:
+            new_user_list.append(toot['account']['id'])
     if len(toot['mentions']) > 0:
         for mention in toot['mentions']:
             if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances']:
                 new_user_list.append(mention['id'])
-    runparams['since_id'] = toot['id']
 
 for user_id in new_user_list:
     if user_id not in my_followed_list or user_id not in runparams['list_seen']:

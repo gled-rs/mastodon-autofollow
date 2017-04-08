@@ -8,6 +8,10 @@ else
   . .venv/bin/activate
 fi
 
+if [ -d .git ]; then
+  git pull
+fi
+
 python Autofollow.py
 
 deactivate
