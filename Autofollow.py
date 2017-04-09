@@ -93,7 +93,7 @@ for toot in toots:
                     if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
                         new_user_list.append(mention['id'])
         #except:
-            print('Error while trying to do something with %s' % (toot))
+        #    print('Error while trying to do something with %s' % (toot))
         runparams['since_id'] = toot['id']
 
 for user_id in new_user_list:
