@@ -7,7 +7,7 @@ DEBUG=False
 INSTANCE='https://mastodon.host'
 
 BLACKLIST = {
-        'users':['b@icosahedron.website','katiekats@community.highlandarrow.com','Elizafox@mst3k.interlinked.me'],
+        'users':['b@icosahedron.website','katiekats@community.highlandarrow.com','Elizafox@mst3k.interlinked.me','hatf@mastodon.cloud','hatf@cybre.space'],
         'instances':['icosahedron.website','slime.global','toot.cat','postgrestodon.magicannon.com','toot.cafe']
         }
 
