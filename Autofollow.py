@@ -3,7 +3,7 @@ import json
 import os
 
 FIRST_RUN=False
-DEBUG=True
+DEBUG=False
 INSTANCE='https://mastodon.host'
 
 BLACKLIST = {
@@ -64,10 +64,10 @@ if DEBUG:
 my_followed = mastodon.account_following(my_id)
 my_followed_list=[my_id]
 total_followed=0
-for user in my_followed:
-    if 'id' in user:
-        my_followed_list.append(user['id'])
-        total_followed+=1
+#for user in my_followed:
+#    if 'id' in user:
+#        my_followed_list.append(user['id'])
+#        total_followed+=1
 
 if 'list_seen' not in runparams:
     runparams['list_seen'] = my_followed_list
@@ -76,22 +76,24 @@ if DEBUG:
     print('I am currently already following %i persons' % total_followed)
 
 toots = mastodon.timeline_public(since_id=runparams['since_id'],limit=40)
+if DEBUG:
+    print('Found %i toots using since_id %i' % (len(toots),runparams['since_id']))
 new_followed=0
 new_user_list=[]
 for toot in toots:
     if DEBUG:
         print('Toot: %s' % toot)
     if toot != 'error':
-        try:
-            if 'account' in toot:
-                if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances'] and not toot['account']['note'].contain('#nobot'):
-                    new_user_list.append(toot['account']['id'])
+        #try:
+        if 'account' in toot:
+            if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
+                new_user_list.append(toot['account']['id'])
             if len(toot['mentions']) > 0:
                 for mention in toot['mentions']:
-                    if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances'] and not toot['account']['note'].contain('#nobot'):
+                    if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
                         new_user_list.append(mention['id'])
-        except:
-            print('Error while trying to do something with %s' % toot)
+        #except:
+            print('Error while trying to do something with %s' % (toot))
         runparams['since_id'] = toot['id']
 
 for user_id in new_user_list:
