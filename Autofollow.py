@@ -81,29 +81,32 @@ if DEBUG:
     print('Found %i toots using since_id %i' % (len(toots),runparams['since_id']))
 new_followed=0
 new_user_list=[]
-for toot in toots:
-    if DEBUG:
-        print('Toot: %s' % toot)
-    if toot != 'error':
-        #try:
-        if 'account' in toot:
-            if '@' in toot['account']['acct']:
-                instance_domain = toot['account']['acct'].split('@')[1]
-            else:
-                instance_domain=INSTANCE
-            if toot['account']['acct'] not in BLACKLIST['users'] and instance_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
-                new_user_list.append(toot['account']['id'])
-            if len(toot['mentions']) > 0:
-                for mention in toot['mentions']:
-                    if '@' in mention['acct']:
-                        mention_domain=mention['acct'].split('@')[1]
-                    else:
-                        mention_domain=INSTANCE
-                    if mention['acct'] not in BLACKLIST['users'] and mention_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
-                        new_user_list.append(mention['id'])
-        #except:
-        #    print('Error while trying to do something with %s' % (toot))
-        runparams['since_id'] = toot['id']
+with open('.toots_followed.log','a') as f:
+    for toot in toots:
+        if DEBUG:
+            print('Toot: %s' % toot)
+        if toot != 'error':
+            #try:
+            if 'account' in toot:
+                if '@' in toot['account']['acct']:
+                    instance_domain = toot['account']['acct'].split('@')[1]
+                else:
+                    instance_domain=INSTANCE
+                if toot['account']['acct'] not in BLACKLIST['users'] and instance_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
+                    new_user_list.append(toot['account']['id'])
+                    f.write("Toot:%s\n" % json.dumps(toot))
+                if len(toot['mentions']) > 0:
+                    for mention in toot['mentions']:
+                        if '@' in mention['acct']:
+                            mention_domain=mention['acct'].split('@')[1]
+                        else:
+                            mention_domain=INSTANCE
+                        if mention['acct'] not in BLACKLIST['users'] and mention_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
+                            new_user_list.append(mention['id'])
+                            f.write("Mention:%s\n" % json.dumps(mention))
+            #except:
+            #    print('Error while trying to do something with %s' % (toot))
+            runparams['since_id'] = toot['id']
 
 for user_id in new_user_list:
     if user_id not in my_followed_list or user_id not in runparams['list_seen']:
