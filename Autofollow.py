@@ -64,10 +64,10 @@ if DEBUG:
 my_followed = mastodon.account_following(my_id)
 my_followed_list=[my_id]
 total_followed=0
-#for user in my_followed:
-#    if 'id' in user:
-#        my_followed_list.append(user['id'])
-#        total_followed+=1
+for user in my_followed:
+    if 'id' in user:
+        my_followed_list.append(user['id'])
+        total_followed+=1
 
 if 'list_seen' not in runparams:
     runparams['list_seen'] = my_followed_list
