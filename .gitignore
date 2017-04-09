@@ -2,3 +2,4 @@
 .venv/
 .pytooter_clientcred.txt
 .pytooter_usercred.txt
+.toots_followed.log
