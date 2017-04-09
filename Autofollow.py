@@ -87,11 +87,19 @@ for toot in toots:
     if toot != 'error':
         #try:
         if 'account' in toot:
-            if toot['account']['acct'] not in BLACKLIST['users'] and toot['account']['acct'].split('@')[1] not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
+            if '@' in toot['account']['acct']:
+                instance_domain = toot['account']['acct'].split('@')[1]
+            else:
+                instance_domain=INSTANCE
+            if toot['account']['acct'] not in BLACKLIST['users'] and instance_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
                 new_user_list.append(toot['account']['id'])
             if len(toot['mentions']) > 0:
                 for mention in toot['mentions']:
-                    if mention['acct'] not in BLACKLIST['users'] and mention['acct'].split('@')[1] not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
+                    if '@' in mention['acct']:
+                        mention_domain=mention['acct'].split('@')[1]
+                    else:
+                        mention_domain=INSTANCE
+                    if mention['acct'] not in BLACKLIST['users'] and mention_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
                         new_user_list.append(mention['id'])
         #except:
         #    print('Error while trying to do something with %s' % (toot))
