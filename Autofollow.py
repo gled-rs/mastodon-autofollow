@@ -21,6 +21,7 @@ if FIRST_RUN or not os.path.exists('.pytooter_clientcred.txt'):
     username=raw_input('What is the username ?')
     password=raw_input('What is the password ?')
     INSTANCE=raw_input('What is your instance ?')
+    botname=raw_input('What is your botname ?')
 
     mastodon = Mastodon(client_id = '.pytooter_clientcred.txt',api_base_url=INSTANCE)
     mastodon.log_in(
@@ -33,7 +34,7 @@ if os.path.exists('.Autofollow.state.json'):
     with open('.Autofollow.state.json','r') as file:
         runparams=json.load(file)
 else:
-    runparams={'since_id':0}
+    runparams={'since_id':0,'botname':botname}
 
 if 'instance' in runparams:
     INSTANCE=runparams['instance']
@@ -53,7 +54,7 @@ else:
     runparams['runcount']+=1
 
 if 'my_id' not in runparams:
-    my_id = mastodon.account_search('@followbot')[0]['id']
+    my_id = mastodon.account_search(runparams['botname'])[0]['id']
     runparams['my_id'] = my_id
 else:
     my_id = runparams['my_id']
