@@ -92,7 +92,7 @@ with open('.toots_followed.log','a') as f:
                     instance_domain = toot['account']['acct'].split('@')[1]
                 else:
                     instance_domain=INSTANCE
-                if toot['account']['acct'] not in BLACKLIST['users'] and instance_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
+                if toot['account']['acct'] not in BLACKLIST['users'] and instance_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note'] and not '#<span>nobot</span>' in toot['account']['note']:
                     new_user_list.append(toot['account']['id'])
                     f.write("Toot:%s\n" % json.dumps(toot))
                 if len(toot['mentions']) > 0:
@@ -101,7 +101,7 @@ with open('.toots_followed.log','a') as f:
                             mention_domain=mention['acct'].split('@')[1]
                         else:
                             mention_domain=INSTANCE
-                        if mention['acct'] not in BLACKLIST['users'] and mention_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note']:
+                        if mention['acct'] not in BLACKLIST['users'] and mention_domain not in BLACKLIST['instances'] and not '#nobot' in toot['account']['note'] and not '#<span>nobot</span>' in toot['account']['note']:
                             new_user_list.append(mention['id'])
                             f.write("Mention:%s\n" % json.dumps(mention))
             #except:
