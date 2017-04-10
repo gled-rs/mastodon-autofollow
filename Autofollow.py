@@ -118,7 +118,7 @@ for user_id in new_user_list:
         runparams['list_seen'].append(user_id)
 
 if new_followed > 0 and runparams['runcount'] > 10:
-    mastodon.toot('I am now following %i users out of the %i I have seen, boost some toots from others so I add them :)' % (total_followed+new_followed,len(runparams['list_seen'])))
+    mastodon.toot('I am now following %i users out of the %i I have seen, boost some toots from others so I can see them :)' % (total_followed+new_followed,len(runparams['list_seen'])),visibility='unlisted')
     runparams['runcount'] = 1
 
 with open('.Autofollow.state.json','w') as file:
