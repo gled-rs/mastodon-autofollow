@@ -1,7 +1,6 @@
 # mastodon-autofollow
-**Disclaimer**: follow bots put an undue burden of spam and traffic on the
-network. It's better to let your instance grow organically. If you want follow
-bots to follow you, put #followme in your profile.
+
+**Disclaimer**: follow bots are viewed negatively by some instance admins and users, as their users receive a notification each time a followbot follows someone. There's already too much followbots out there for now, so unless you have very good reasons to run a single instance and a followbot, if you want one, please consider joining an instance with already one deployed. I won't provide any support in running the bot. Also, there's discussion happening on https://github.com/tootsuite/mastodon/issues/1589 to end the need for those followbots.
 
 Autofollow bot for mastodon, the first of its kind.
 
