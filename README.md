@@ -1,4 +1,8 @@
 # mastodon-autofollow
+**Disclaimer**: follow bots put an undue burden of spam and traffic on the
+network. It's better to let your instance grow organically. If you want follow
+bots to follow you, put #followme in your profile.
+
 Autofollow bot for mastodon, the first of its kind.
 
 Simple bot that follows every new user it finds on the public timeline of an instance( except the blacklisted ones, or if the user has #nobot in his bio ).
