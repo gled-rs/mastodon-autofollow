@@ -2,7 +2,7 @@
 
 **Disclaimer**: follow bots are viewed negatively by some instance admins and users, as their users receive a notification each time a followbot follows someone. There's already too much followbots out there for now, so unless you have very good reasons to run a single instance and a followbot, if you want one, please consider joining an instance with already one deployed. I won't provide any support in running the bot. Also, there's discussion happening on https://github.com/tootsuite/mastodon/issues/1589 to end the need for those followbots.
 
-The list of instances that run bots who do not implement at least #nobot will be published here soon, I'm compiling the list to integrate it into an automatic domain ban that I'll release to each instance admin.
+_The list of instances that run bots who do not implement at least #nobot will be published here soon, I'm compiling the list to integrate it into an automatic domain ban that I'll release to each instance admin._
 
 Autofollow bot for mastodon, the first of its kind.
 
