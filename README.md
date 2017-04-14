@@ -2,6 +2,8 @@
 
 **Disclaimer**: follow bots are viewed negatively by some instance admins and users, as their users receive a notification each time a followbot follows someone. There's already too much followbots out there for now, so unless you have very good reasons to run a single instance and a followbot, if you want one, please consider joining an instance with already one deployed. I won't provide any support in running the bot. Also, there's discussion happening on https://github.com/tootsuite/mastodon/issues/1589 to end the need for those followbots.
 
+The list of instances that run bots who do not implement at least #nobot will be published here soon, I'm compiling the list to integrate it into an automatic domain ban that I'll release to each instance admin.
+
 Autofollow bot for mastodon, the first of its kind.
 
 Simple bot that follows every new user it finds on the public timeline of an instance( except the blacklisted ones, or if the user has #nobot in his bio ).
@@ -26,6 +28,9 @@ use it in cron at your own pace after the first launch ( you need to launch manu
 Example:
 */2	*	*	*	* cd /home/mastodon/mastodon-autofollow; ./launch.sh >> /home/mastodon/autofollow.log
 
+# whitelist
+
+If you want to be followed by a bot, add the #followme tag in your bio !
 
 # blacklist:
 
