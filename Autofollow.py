@@ -7,7 +7,7 @@ DEBUG=False
 INSTANCE='https://mastodon.host'
 
 BLACKLIST = {
-        'users':['b@icosahedron.website','katiekats@community.highlandarrow.com','Elizafox@mst3k.interlinked.me','hatf@mastodon.cloud','hatf@cybre.space','xial@ninetailed.uk','lopatto@mastodon.xyz'],
+        'users':['b@icosahedron.website','katiekats@community.highlandarrow.com','elizafox@mst3k.interlinked.me','hatf@mastodon.cloud','hatf@cybre.space','xial@ninetailed.uk','lopatto@mastodon.xyz'],
         'instances':['icosahedron.website','slime.global','toot.cat','postgrestodon.magicannon.com','toot.cafe','cmpwn.com']
         }
 
@@ -94,7 +94,7 @@ with open('.toots_followed.log','a') as f:
                     instance_domain=INSTANCE
                 if toot['account']['acct'] not in BLACKLIST['users'] \
                         and instance_domain not in BLACKLIST['instances'] \
-                        and ('#followme' in toot['account']['note'] or '#<span>followme</span>' in toot['account']['note']):
+                        and ('#followme' in toot['account']['note'].lower() or '#<span>followme</span>' in toot['account']['note'].lower()):
                     new_user_list.append(toot['account']['id'])
                     f.write("Toot:%s\n" % json.dumps(toot))
                 if len(toot['mentions']) > 0:
@@ -103,9 +103,9 @@ with open('.toots_followed.log','a') as f:
                             mention_domain=mention['acct'].split('@')[1]
                         else:
                             mention_domain=INSTANCE
-                        if mention['acct'] not in BLACKLIST['users'] \
-                                and mention_domain not in BLACKLIST['instances'] \
-                                and ('#followme' in toot['account']['note'] or '#<span>followme</span>' in toot['account']['note']):
+                        if mention['acct'].lower() not in BLACKLIST['users'] \
+                                and mention_domain.lower() not in BLACKLIST['instances'] \
+                                and ('#followme' in toot['account']['note'].lower() or '#<span>followme</span>' in toot['account']['note'].lower()):
                             new_user_list.append(mention['id'])
                             f.write("Mention:%s\n" % json.dumps(mention))
             #except:
